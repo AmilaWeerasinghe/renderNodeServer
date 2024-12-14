@@ -18,13 +18,22 @@ app.use(cors());
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+}).then(() => {
+  console.log('Connected to MongoDB');
+}).catch((err) => {
+  console.error('Error connecting to MongoDB:', err.message);
 });
 
 // Route to get all skills
 app.get('/api/skills', async (req, res) => {
-  const skills = await Skill.find();
-  console.log('GET /api/skills', skills);
-  res.json(skills);
+  try {
+    const skills = await Skill.find();
+    console.log('GET /api/skills', skills);
+    res.json(skills);
+  } catch (err) {
+    console.error('Error fetching skills:', err.message);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Start the HTTP server
