@@ -6,4 +6,4 @@ const skillSchema = new Schema({
   votes: { type: Number, default: 0 },
 });
 
-module.exports = mongoose.model('Skill', skillSchema);
+module.exports = mongoose.model('Skill', skillSchema, 'skills');
