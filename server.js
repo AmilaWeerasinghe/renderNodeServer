@@ -23,6 +23,7 @@ mongoose.connect(process.env.MONGO_URI, {
 // Route to get all skills
 app.get('/api/skills', async (req, res) => {
   const skills = await Skill.find();
+  console.log('GET /api/skills', skills);
   res.json(skills);
 });
 
