@@ -18,8 +18,13 @@ app.use(cors());
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-}).then(() => {
+}).then(async () => {
   console.log('Connected to MongoDB');
+   // Log database and collection names
+   const db = mongoose.connection.db;
+   const collections = await db.listCollections().toArray();
+   console.log('Database:', db.databaseName);
+   console.log('Collections:', collections.map(col => col.name));
 }).catch((err) => {
   console.error('Error connecting to MongoDB:', err.message);
 });
