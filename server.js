@@ -28,3 +28,5 @@ const httpServer = app.listen(PORT, () => {
 
 // Setup WebSocket using the same http server created using express
 setupWebSocket(httpServer);
+
+module.exports = app; // export app for testing
