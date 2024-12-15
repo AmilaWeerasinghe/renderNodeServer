@@ -1,9 +1,10 @@
 const WebSocket = require('ws');
 const express = require('express');
-const mongoose = require('mongoose');
 const Skill = require('./models/Skill');
 const cors = require('cors');
-require('dotenv').config();
+const connectDb = require('./database/db');
+const setupWebSocket = require('./websocket/websocket');
+const skillRoutes = require('./routes/skills');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -15,56 +16,15 @@ app.use(express.json());
 app.use(cors());
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
-  console.log('Connected to MongoDB');
-}).catch((err) => {
-  console.error('Error connecting to MongoDB:', err.message);
-});
+connectDb();
 
-// Route to get all skills
-app.get('/api/skills', async (req, res) => {
-  try {
-    const skills = await Skill.find();
-    console.log('GET /api/skills', skills);
-    res.json(skills);
-  } catch (err) {
-    console.error('Error fetching skills:', err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
+// Routes
+app.use('/api/skills', skillRoutes);
 
 // Start the HTTP server
 const httpServer = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-const server = new WebSocket.Server({ server: httpServer });
-let visitorCount = 0;
-
-server.on('connection', (ws) => {
-  visitorCount++;
-  console.log('Client connected. Total visitors:', visitorCount);
-
-  // Broadcast the updated visitor count to all connected clients
-  server.clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify({ type: 'visitorCount', count: visitorCount }));
-    }
-  });
-
-  // Handle client disconnection
-  ws.on('close', () => {
-    visitorCount--;
-    console.log('Client disconnected. Total visitors:', visitorCount);
-
-    // Broadcast the updated visitor count to all connected clients
-    server.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify({ type: 'visitorCount', count: visitorCount }));
-      }
-    });
-  });
-});
+// Setup WebSocket using the same http server created using express
+setupWebSocket(httpServer);
