@@ -6,7 +6,8 @@
   "scripts": {
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "mocha '**/*.spec.js' --exit",
-    "test:integration": "mocha 'test/*.test.js' --exit"
+    "test:integration": "mocha 'test/*.test.js' --exit",
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
