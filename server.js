@@ -1,11 +1,11 @@
-const WebSocket = require('ws');
 const express = require('express');
-const Skill = require('./models/Skill');
 const cors = require('cors');
 const connectDb = require('./database/db');
 const setupWebSocket = require('./websocket/websocket');
 const skillRoutes = require('./routes/skills');
 const authRoutes = require('./routes/auth');
+const session = require('express-session');
+const passport = require('passport');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -15,6 +15,13 @@ app.use(express.json());
 
 // Middleware to enable CORS
 app.use(cors());
+
+// Middleware to handle sessions
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }));
+
+// Middleware to initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Connect to MongoDB
 connectDb();
