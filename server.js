@@ -5,6 +5,7 @@ const cors = require('cors');
 const connectDb = require('./database/db');
 const setupWebSocket = require('./websocket/websocket');
 const skillRoutes = require('./routes/skills');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -20,6 +21,7 @@ connectDb();
 
 // Routes
 app.use('/api/skills', skillRoutes);
+app.use('/api/auth', authRoutes);
 
 // Start the HTTP server
 const httpServer = app.listen(PORT, () => {
