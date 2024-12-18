@@ -6,8 +6,8 @@ const router = express.Router(); // like a mini express server to handle routes 
 router.get('/google', googleAuthController.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get('/google/callback', googleAuthController.authenticate('google', { failureRedirect: '/'}), (req, res) => {
-    console.log('Successfully authenticated');
-    res.redirect(`https://amilaweerasinghe.github.io/authenticate?token=${req.user.token}`);
+    console.log('Successfully authenticated',req.user.name);
+    res.redirect(`http://localhost:3000/authenticate?token=${req.user.token}&userId=${req.user.user.googleId}`);
 })
 
 module.exports = router;
