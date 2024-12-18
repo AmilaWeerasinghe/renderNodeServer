@@ -7,7 +7,7 @@ router.get('/google', googleAuthController.authenticate('google', { scope: ['pro
 
 router.get('/google/callback', googleAuthController.authenticate('google', { failureRedirect: '/'}), (req, res) => {
     console.log('Successfully authenticated',req.user.name);
-    res.redirect(`${process.env.REACT_APP_BASE_URL}/authenticate?token=${req.user.token}&userId=${req.user.user.googleId}`);
+    res.redirect(`${process.env.REACT_APP_BASE_URL}/#/authenticate?token=${req.user.token}&userId=${req.user.user.googleId}`);
 })
 
 module.exports = router;
