@@ -13,7 +13,7 @@ passport.use( new GoogleStrategy(
     {
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
-        callbackURL: 'http://localhost:8000/api/auth/google/callback'
+        callbackURL: `${process.env.API_BASE_URL}/api/auth/google/callback`
     },
     (accessToken, refreshToken, profile, done) => {
         //profile contains the user information from Google
