@@ -26,10 +26,11 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Set environment variables
-      run: echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> $GITHUB_ENV
-      run: echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> $GITHUB_ENV
-      run: echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> $GITHUB_ENV
-      run: echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" >> $GITHUB_ENV
+      run: |
+        echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> $GITHUB_ENV
+        echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> $GITHUB_ENV
+        echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> $GITHUB_ENV
+        echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" >> $GITHUB_ENV
 
     - name: Install dependencies
       run: npm install
